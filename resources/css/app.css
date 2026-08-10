@@ -1,0 +1,6 @@
+/* Estilos base do projeto.
+   O Tailwind CSS é introduzido junto com o SPA em Vue (resources/js). */
+body {
+    font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
