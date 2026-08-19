@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\TenantSelectController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -26,4 +27,16 @@ if (app()->environment('local', 'testing')) {
 Route::middleware('auth')->group(function () {
     Route::get('/tenants/select', [TenantSelectController::class, 'create'])->name('tenants.select');
     Route::post('/tenants/switch', [TenantSelectController::class, 'store'])->name('tenants.switch');
+});
+
+// Socialite — expõe apenas os providers com credenciais configuradas.
+Route::prefix('auth')->group(function () {
+    Route::get('/{provider}/redirect', [SocialAuthController::class, 'redirect'])
+        ->middleware(['guest', 'throttle:5,1'])
+        ->whereIn('provider', ['google', 'github', 'microsoft'])
+        ->name('socialite.redirect');
+
+    Route::get('/{provider}/callback', [SocialAuthController::class, 'callback'])
+        ->whereIn('provider', ['google', 'github', 'microsoft'])
+        ->name('socialite.callback');
 });

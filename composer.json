@@ -9,6 +9,7 @@
         "php": "^8.3",
         "laravel/framework": "^13.17",
         "laravel/fortify": "^1.19",
+        "laravel/socialite": "^5.15",
         "laravel/tinker": "^3.0"
     },
     "require-dev": {
