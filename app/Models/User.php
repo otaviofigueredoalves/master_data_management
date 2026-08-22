@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable([
     'name',
@@ -26,7 +27,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, HasRoles, Notifiable;
 
     /**
      * The tenants this user is a member of.
@@ -65,6 +66,14 @@ class User extends Authenticatable
             ->where('tenant_id', $tenantId)
             ->where('is_active', true)
             ->first();
+    }
+
+    /**
+     * Whether the user is a platform-level super administrator.
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasRole('super-admin');
     }
 
     protected function casts(): array
