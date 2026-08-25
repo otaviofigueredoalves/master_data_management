@@ -23,6 +23,11 @@ class Tenant extends Model
         return $this->hasMany(TenantUser::class);
     }
 
+    public function mdmEntities(): HasMany
+    {
+        return $this->hasMany(MdmEntity::class);
+    }
+
     protected function casts(): array
     {
         return [
