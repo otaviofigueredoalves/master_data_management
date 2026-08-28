@@ -28,6 +28,16 @@ class Tenant extends Model
         return $this->hasMany(MdmEntity::class);
     }
 
+    public function integrations(): HasMany
+    {
+        return $this->hasMany(Integration::class);
+    }
+
+    public function syncJobs(): HasMany
+    {
+        return $this->hasMany(SyncJob::class);
+    }
+
     protected function casts(): array
     {
         return [
