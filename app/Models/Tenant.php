@@ -33,6 +33,11 @@ class Tenant extends Model
         return $this->hasMany(Integration::class);
     }
 
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(TenantInvitation::class);
+    }
+
     public function syncJobs(): HasMany
     {
         return $this->hasMany(SyncJob::class);

@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Route;
 // Landing page (blade) — será substituída pelo SPA em Vue no futuro.
 Route::view('/', 'landing')->name('home');
 
+// Documentação interativa da API REST.
+Route::get('/docs', fn () => view('docs'))->name('docs');
+
 // Conveniência para entrevistas/demos locais — nunca exposta fora de local.
 if (app()->environment('local', 'testing')) {
     Route::get('/demo-login', function () {
