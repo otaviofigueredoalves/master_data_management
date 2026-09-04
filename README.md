@@ -215,4 +215,4 @@ tests/Feature/                       # suíte comportamental
 
 ---
 
-Construído seguindo as convenções do **Laravel Boost**. Consulte `resources/views/docs.blade.php` (servida em `/docs`) para a documentação interativa da API.
+Consulte `resources/views/docs.blade.php` (servida em `/docs`) para a documentação interativa da API.

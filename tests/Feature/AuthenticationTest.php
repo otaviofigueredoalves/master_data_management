@@ -70,4 +70,33 @@ class AuthenticationTest extends TestCase
 
         $this->assertCount(0, $user->fresh()->tokens);
     }
+
+    public function test_update_profile_rejects_email_already_in_use_by_another_user(): void
+    {
+        $fixtures = $this->seedTenantWithMembers();
+
+        $this->actingAsSanctum($fixtures['admin'])
+            ->putJson('/api/v1/me', [
+                'name' => $fixtures['admin']->name,
+                'email' => $fixtures['viewer']->email,
+            ])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('email');
+    }
+
+    public function test_update_profile_accepts_timezone_and_locale(): void
+    {
+        $fixtures = $this->seedTenantWithMembers();
+
+        $this->actingAsSanctum($fixtures['admin'])
+            ->putJson('/api/v1/me', [
+                'name' => $fixtures['admin']->name,
+                'email' => $fixtures['admin']->email,
+                'timezone' => 'America/Sao_Paulo',
+                'locale' => 'pt_BR',
+            ])
+            ->assertOk()
+            ->assertJsonPath('data.timezone', 'America/Sao_Paulo')
+            ->assertJsonPath('data.locale', 'pt_BR');
+    }
 }

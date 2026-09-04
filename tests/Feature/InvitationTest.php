@@ -76,4 +76,59 @@ class InvitationTest extends TestCase
             ->postJson("/api/v1/invitations/{$invite->token}/accept", ['email' => 'invitee@example.com'])
             ->assertUnprocessable();
     }
+
+    public function test_already_accepted_invitation_cannot_be_accepted_again(): void
+    {
+        $fixtures = $this->seedTenantWithMembers();
+
+        $invite = $fixtures['tenant']->invitations()->create([
+            'email' => 'invitee@example.com',
+            'token' => 'accepted-token',
+            'roles' => ['manager'],
+            'permissions' => [],
+            'invited_by' => $fixtures['admin']->id,
+            'expires_at' => now()->addDays(7),
+            'accepted_at' => now(),
+        ]);
+
+        $this->postJson("/api/v1/invitations/{$invite->token}/accept", ['email' => 'invitee@example.com'])
+            ->assertUnprocessable()
+            ->assertJsonPath('message', 'Este convite já foi aceito.');
+    }
+
+    public function test_accept_rejects_email_that_does_not_match_the_invitation(): void
+    {
+        $fixtures = $this->seedTenantWithMembers();
+
+        $invite = $fixtures['tenant']->invitations()->create([
+            'email' => 'invitee@example.com',
+            'token' => 'mismatch-token',
+            'roles' => ['manager'],
+            'permissions' => [],
+            'invited_by' => $fixtures['admin']->id,
+            'expires_at' => now()->addDays(7),
+        ]);
+
+        $this->postJson("/api/v1/invitations/{$invite->token}/accept", ['email' => 'outro@example.com'])
+            ->assertUnprocessable()
+            ->assertJsonPath('message', 'O e-mail informado não corresponde ao convite.');
+    }
+
+    public function test_accept_requires_existing_account_when_no_password_is_sent(): void
+    {
+        $fixtures = $this->seedTenantWithMembers();
+
+        $invite = $fixtures['tenant']->invitations()->create([
+            'email' => 'semconta@example.com',
+            'token' => 'no-account-token',
+            'roles' => ['user'],
+            'permissions' => [],
+            'invited_by' => $fixtures['admin']->id,
+            'expires_at' => now()->addDays(7),
+        ]);
+
+        $this->postJson("/api/v1/invitations/{$invite->token}/accept", ['email' => 'semconta@example.com'])
+            ->assertUnprocessable()
+            ->assertJsonPath('message', 'Crie uma conta com este e-mail antes de aceitar o convite.');
+    }
 }

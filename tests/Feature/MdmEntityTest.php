@@ -68,4 +68,31 @@ class MdmEntityTest extends TestCase
         $this->assertSame('ACME', $fresh->normalized_data['name']);
         $this->assertSame('contact@acme.com', $fresh->normalized_data['email']);
     }
+
+    public function test_viewer_cannot_normalize_entity(): void
+    {
+        $fixtures = $this->seedTenantWithMembers();
+        $entity = MdmEntity::factory()->create([
+            'tenant_id' => $fixtures['tenant']->id,
+            'is_master' => false,
+        ]);
+
+        $this->actingAsSanctum($fixtures['viewer'])
+            ->postJson("/api/v1/mdm-entities/{$entity->id}/normalize", [], $this->tenantHeaders($fixtures['tenant']))
+            ->assertForbidden();
+    }
+
+    public function test_normalize_rejects_entity_from_another_tenant(): void
+    {
+        $tenantA = $this->seedTenantWithMembers();
+        $tenantB = $this->seedTenantWithMembers()['tenant'];
+        $entityB = MdmEntity::factory()->create([
+            'tenant_id' => $tenantB->id,
+            'is_master' => false,
+        ]);
+
+        $this->actingAsSanctum($tenantA['admin'])
+            ->postJson("/api/v1/mdm-entities/{$entityB->id}/normalize", [], $this->tenantHeaders($tenantA['tenant']))
+            ->assertForbidden();
+    }
 }
