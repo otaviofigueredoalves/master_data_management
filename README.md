@@ -179,18 +179,6 @@ vendor/bin/pint           # estilo de código (preset Laravel)
 
 Cobertura: autenticação e ciclo de vida do token, aceitação/expiração de convites, isolamento de tenant (`403` entre tenants), aplicação de role/permissão, CRUD de entidades MDM + versionamento + normalização, efeitos colaterais de auditoria e dispatch de sync.
 
-## Documentação complementar
-
-Guias e explicações detalhadas (em pt-BR) vivem em `general_notes/`:
-
-| Documento | Conteúdo |
-|---|---|
-| [`general_notes/EXPLICACAO-DA-APLICACAO.md`](general_notes/EXPLICACAO-DA-APLICACAO.md) | Lógica interna e decisões de arquitetura |
-| [`general_notes/EXPLICACAO-PASSO-A-PASSO.md`](general_notes/EXPLICACAO-PASSO-A-PASSO.md) | Passo a passo didático de uso da aplicação |
-| [`general_notes/GUIA-POSTMAN.md`](general_notes/GUIA-POSTMAN.md) | Guia para testar a API no Postman |
-| [`general_notes/DESIGN-SYSTEM.md`](general_notes/DESIGN-SYSTEM.md) | Design system do SPA Vue |
-| [`general_notes/DEPLOY-LARAVEL-CLOUD.md`](general_notes/DEPLOY-LARAVEL-CLOUD.md) | Guia de deploy no Laravel Cloud |
-
 ## Estrutura de destaque do projeto
 
 ```
