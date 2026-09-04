@@ -77,6 +77,20 @@
         table { width: 100%; border-collapse: collapse; font-size: 14px; }
         th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
         th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        @media (max-width: 640px) {
+            .shell { padding: 0 16px; }
+            header.site { padding: 16px 0; }
+            header.site .row { flex-direction: column; gap: 12px; align-items: center; justify-content: center !important; }
+            .row { flex-wrap: wrap; row-gap: 8px; }
+            ul.menu { gap: 14px; font-size: 14px; flex-wrap: wrap; justify-content: center; }
+            .card.auth, .card.wide { padding: 24px 18px; }
+            h1 { font-size: 20px; line-height: 1.3; }
+            .subtitle { font-size: 14px; line-height: 1.5; overflow-wrap: break-word; }
+            .subtitle code { white-space: pre-wrap; word-break: break-all; }
+            pre { font-size: 12px; padding: 14px; }
+            .table-wrap table { white-space: nowrap; }
+        }
     </style>
 </head>
 <body>
