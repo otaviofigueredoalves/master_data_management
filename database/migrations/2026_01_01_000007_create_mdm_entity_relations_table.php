@@ -17,8 +17,14 @@ return new class extends Migration
             $table->json('metadata')->nullable();
             $table->timestamps();
 
-            $table->unique(['tenant_id', 'parent_id', 'child_id', 'relation_type']);
-            $table->index(['tenant_id', 'child_id', 'relation_type']);
+            $table->unique(
+                ['tenant_id', 'parent_id', 'child_id', 'relation_type'],
+                'mdm_er_tenant_parent_child_type_unique'
+            );
+            $table->index(
+                ['tenant_id', 'child_id', 'relation_type'],
+                'mdm_er_tenant_child_type_index'
+            );
         });
     }
 
