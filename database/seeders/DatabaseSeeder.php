@@ -67,12 +67,64 @@ class DatabaseSeeder extends Seeder
             }
         }
 
+        $demoUser = User::where('email', 'demo@mdmsaas.test')->first();
+
         if (MdmEntity::where('tenant_id', $tenant->id)->doesntExist()) {
-            MdmEntity::factory()->count(5)->create([
-                'tenant_id' => $tenant->id,
-                'created_by' => User::where('email', 'demo@mdmsaas.test')->first()->id,
-                'updated_by' => User::where('email', 'demo@mdmsaas.test')->first()->id,
-            ]);
+            $demoEntities = [
+                [
+                    'type' => 'customer',
+                    'source_system' => 'crm',
+                    'external_id' => 'CUST-0001',
+                    'data' => ['name' => 'Acme Retail Ltda', 'value' => 2500.00, 'active' => true],
+                    'normalized_data' => ['name' => 'Acme Retail Ltda', 'value' => 2500.00, 'active' => true],
+                    'is_master' => true,
+                    'version' => 3,
+                ],
+                [
+                    'type' => 'customer',
+                    'source_system' => 'erp',
+                    'external_id' => 'CUST-0002',
+                    'data' => ['name' => 'Globex Corporation', 'value' => 4800.00, 'active' => true],
+                    'normalized_data' => ['name' => 'Globex Corporation', 'value' => 4800.00, 'active' => true],
+                    'is_master' => false,
+                    'version' => 2,
+                ],
+                [
+                    'type' => 'product',
+                    'source_system' => 'erp',
+                    'external_id' => 'PROD-0101',
+                    'data' => ['name' => 'Enterprise MDM Suite', 'value' => 999.99, 'active' => true],
+                    'normalized_data' => ['name' => 'Enterprise MDM Suite', 'value' => 999.99, 'active' => true],
+                    'is_master' => true,
+                    'version' => 5,
+                ],
+                [
+                    'type' => 'supplier',
+                    'source_system' => 'excel',
+                    'external_id' => 'SUPP-0500',
+                    'data' => ['name' => 'Northwind Supplies', 'value' => 1200.00, 'active' => true],
+                    'normalized_data' => ['name' => 'Northwind Supplies', 'value' => 1200.00, 'active' => true],
+                    'is_master' => false,
+                    'version' => 1,
+                ],
+                [
+                    'type' => 'location',
+                    'source_system' => 'api',
+                    'external_id' => 'LOC-0001',
+                    'data' => ['name' => 'São Paulo Headquarters', 'value' => 1, 'active' => true],
+                    'normalized_data' => ['name' => 'São Paulo Headquarters', 'value' => 1, 'active' => true],
+                    'is_master' => true,
+                    'version' => 2,
+                ],
+            ];
+
+            foreach ($demoEntities as $entity) {
+                MdmEntity::create(array_merge($entity, [
+                    'tenant_id' => $tenant->id,
+                    'created_by' => $demoUser?->id,
+                    'updated_by' => $demoUser?->id,
+                ]));
+            }
         }
 
         Integration::firstOrCreate(
